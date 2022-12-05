@@ -22,7 +22,8 @@ class LogTable extends Component
     {
         // $user = User::where('email', auth()->user()->email)->first();
         // $data_shipment = Shipment::whereIn('status', ['pending', 'done'])->where('id_user', $user->id_user)->get();
-        $data_shipment = Shipment::all();
+        $userId = User::where('email', auth()->user()->email)->first();
+        $data_shipment = Shipment::orderBy('id_shipment', 'DESC')->where('id_user',$userId->id_user)->get();
 
         return view('livewire.log-table', [
             'shipment' => $data_shipment
@@ -49,6 +50,10 @@ class LogTable extends Component
 
         $insert->save();
 
+        $usernameShipmentId = $userId->username;
+        $nameShipmentId = $userId->name;
+        $roleShipmentId = $userId->role;
+        $mailShipmentId = $userId->email;
         $userShipmentId = $insert->id_user;
         $shipmentId = $insert->id_shipment;
         $cnameShipmentId = $insert->client_name;
@@ -59,6 +64,10 @@ class LogTable extends Component
         $history = ShipmentHistory::create([
             'id_shipment' => $shipmentId,
             'id_user' => $userShipmentId,
+            'username' => $usernameShipmentId,
+            'name' => $nameShipmentId,
+            'role' => $roleShipmentId,
+            'email' => $mailShipmentId,
             'client_name' => $cnameShipmentId,
             'client_place' => $cplaceShipmentId,
             'spb_number' => $spbShipmentId,

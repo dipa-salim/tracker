@@ -10,30 +10,31 @@
     </div>
   </div>
 
-  @foreach ($shipment as $key => $data)
-    <div class="card">
-      <div class="card-body">
-        <div class="col-lg-12">
-          <div class="d-flex justify-content-end mb-2">
-            <button class="btn btn-primary" data-toggle="modal" data-target="#formModal">
-              <i class="fa fa-plus-circle mr-2"></i>Tambah
-            </button>
-          </div>
+
+  <div class="card">
+    <div class="card-body">
+      <div class="col-lg-12">
+        <div class="d-flex justify-content-end mb-2">
+          <button class="btn btn-primary" data-toggle="modal" data-target="#formModal">
+            <i class="fa fa-plus-circle mr-2"></i>Tambah
+          </button>
         </div>
-        <div class="col-lg-12 table-responsive">
-          <table class="table table-striped table-dark">
-            <thead>
+      </div>
+      <div class="col-lg-12 table-responsive">
+        <table class="table table-striped table-dark">
+          <thead>
+            <tr>
+              <th>Tanggal</th>
+              <th>Pemesan</th>
+              <th>Detail</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            @foreach ($shipment as $key => $data)
               <tr>
-                <th>Tanggal</th>
-                <th>Pemesan</th>
-                <th>Detail</th>
-                <th>Status</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td>{{ $data->updated_at }}</td>
-                {{-- <td>{{ $data->user()->first()->name }}</td> --}}
+                {{-- <td>{{ $data->updated_at }}</td> --}}
+                <td>{{ \Carbon\Carbon::parse($data->updated_at)->format('l\, d-m-Y H:i') }}</td>
                 <td>{{ $data->client_name }}</td>
                 <td>
                   <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#detail-{{ $key }}">
@@ -42,24 +43,25 @@
                 </td>
                 <td>
                   @if ($data->status == 'dalamPerjalanan')
-                    <button class="btn btn-success btn-sm">Selesai</button>
+                    <a href="{{ route('Kurir.update', ['id' => $data->id_shipment]) }}"
+                      class="badge badge-warning">Update</a>
                   @else
-                    {{-- <a href="{{ route('Skripsi.cancelKaprodi', ['id' => $data->id_skripsi]) }}" class="btn btn-danger btn-sm" >Batal</a> --}}
-                    <a class="btn btn-danger btn-sm">Batal</a>
+                    <a class="badge badge-success rounded-pill">Selesai</a>
                   @endif
                 </td>
               </tr>
-            </tbody>
-          </table>
-        </div>
+            @endforeach
+          </tbody>
+        </table>
       </div>
     </div>
+  </div>
 
-
+  @foreach ($shipment as $key => $data)
     {{-- Modal Detail --}}
-    <div class="modal fade bd-example-modal-md" id="detail-{{ $key }}" tabindex="-1" role="dialog"
+    <div class="modal fade bd-example-modal-sm" id="detail-{{ $key }}" tabindex="-1" role="dialog"
       aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-      <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-dialog modal-sm" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h4 class="modal-title">Detail Pengiriman</h4>
@@ -68,7 +70,7 @@
             </button>
           </div>
           <div class="modal-body">
-            <table class="table-stripped">
+            <table class="table">
               <tr>
                 <th>SPB</th>
                 <td><span>{{ $data->spb_number }}</span></td>
@@ -146,7 +148,8 @@
         <div class="modal-footer justify-content-end">
           <button type="button" class="btn btn-default" data-dismiss="modal"><i class='nav-icon fas fa-arrow-left'></i>
             &nbsp; Kembali</button>
-          <button wire:click="save" type="submit" class="btn btn-primary"><i class="nav-icon fas fa-save"></i> &nbsp;
+          <button wire:click="save" type="submit" class="btn btn-primary"><i class="nav-icon fas fa-save"></i>
+            &nbsp;
             Kirim</button>
         </div>
       </div>
