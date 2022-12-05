@@ -18,19 +18,11 @@ use App\Http\Controllers\ShipmentController;
 |
 */
 
-// Route::get('/', function () {
-//     return view('layout.app');
-// });
-
-
-// Route::post('login', [AuthController::class, 'loginjwt'])->name('login.custom');
-// Route::get('register', [AuthController::class, 'register']);
-// Route::post('register', [AuthController::class, 'store'])->name('Auth.store');
-// Route::get('logout', [AuthController::class, 'logout']);
-
-Route::get('login', [AuthController::class, 'index'])->name('login');
+Route::get('/', [AuthController::class, 'index'])->name('login');
 
 Route::post('login', [AuthController::class, 'authenticate'])->name('auth');
+
+Route::get('/logout', [AuthController::class, 'logout']);
 
 Route::middleware(['auth.basic'])->group(function () {
 
@@ -39,12 +31,5 @@ Route::middleware(['auth.basic'])->group(function () {
 
     // Kurir Dashboard
     Route::get('/log-kurir', LogTable::class);
-    Route::post('log-kurir', [ShipmentController::class, 'store'])->name('Shipment.store');
+    // Route::post('log-kurir', [ShipmentController::class, 'store'])->name('Shipment.store');
 });
-
-// // Master Data
-// Route::get('/dashboard', [KurirController::class,'index']);
-
-// // Kurir Dashboard
-// Route::get('/log-kurir', LogTable::class);
-// Route::post('log-kurir', [ShipmentController::class, 'store'])->name('Shipment.store');

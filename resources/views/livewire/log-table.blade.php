@@ -15,7 +15,7 @@
       <div class="card-body">
         <div class="col-lg-12">
           <div class="d-flex justify-content-end mb-2">
-            <button class="btn btn-primary" data-toggle="modal" data-target="#form-{{ $key }}">
+            <button class="btn btn-primary" data-toggle="modal" data-target="#formModal">
               <i class="fa fa-plus-circle mr-2"></i>Tambah
             </button>
           </div>
@@ -41,7 +41,7 @@
                   </button>
                 </td>
                 <td>
-                  @if ($data->status == 'onprogress')
+                  @if ($data->status == 'dalamPerjalanan')
                     <button class="btn btn-success btn-sm">Selesai</button>
                   @else
                     {{-- <a href="{{ route('Skripsi.cancelKaprodi', ['id' => $data->id_skripsi]) }}" class="btn btn-danger btn-sm" >Batal</a> --}}
@@ -93,60 +93,64 @@
   @endforeach
 
   {{-- Modal Form --}}
-  @foreach ($shipment as $key => $data)
-    <form action="{{ route('Shipment.store', ['id' => $data->id_shipment]) }}" method="POST"
-      enctype="multipart/form-data">
-      @csrf
-      <div class="modal fade bd-example-modal-md" id="form-{{ $key }}" tabindex="-1" role="dialog"
-        aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-lg" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h4 class="modal-title">Form Aktivitas</h4>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <div class="form-group">
-                {{-- <input type="hidden" name="id_dosen" value="{{ $data->id_dosen }}">  --}}
-                <label for="exampleInputFile1">Nomor SPB</label>
-                <div class="input-group">
-                  <div class="custom-file">
-                    <input name="spb_number" value="{{ old('spb_number') }}" type="text" class="form-control"
-                      rows='2' placeholder="Input Nomor SPB" old>
-                  </div>
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="exampleInputFile1">Penerima</label>
-                <div class="input-group">
-                  <div class="custom-file">
-                    <input name="jclient_name" value="{{ old('client_name') }}" type="text" class="form-control"
-                      rows='2' placeholder="Input Nama Pemesan" old>
-                  </div>
-                </div>
-              </div>
-              <div class="form-group">
-                <label for="exampleInputFile1">RS/Instansi</label>
-                <div class="input-group">
-                  <div class="custom-file">
-                    <input name="client_place" value="{{ old('client_place') }}" type="text" class="form-control"
-                      rows='2' placeholder="Input Nama RS/Instansi" old>
-                  </div>
+  <div class="modal fade bd-example-modal-md" id="formModal" tabindex="-1" role="dialog"
+    aria-labelledby="myExtraLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Form Aktivitas</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form wire:submit.prevent="store">
+            <div class="form-group">
+              {{-- <input type="hidden" name="id_dosen" value="{{ $data->id_dosen }}">  --}}
+              <label for="exampleInputFile1">Nomor SPB</label>
+              <div class="input-group">
+                <div class="custom-file">
+                  <input wire:model.defer="spb_number" value="{{ old('spb_number') }}" type="text"
+                    class="form-control" rows='2' placeholder="Input Nomor SPB" old>
+                  @error('spb_number')
+                    <span class="text-danger" style="font-size: 11px">{{ $message }}</span>
+                  @enderror
                 </div>
               </div>
             </div>
-            <div class="modal-footer justify-content-end">
-              <button type="button" class="btn btn-default" data-dismiss="modal"><i
-                  class='nav-icon fas fa-arrow-left'></i>
-                &nbsp; Kembali</button>
-              <button type="submit" class="btn btn-primary"><i class="nav-icon fas fa-save"></i> &nbsp; Kirim</button>
+            <div class="form-group">
+              <label for="exampleInputFile1">Penerima</label>
+              <div class="input-group">
+                <div class="custom-file">
+                  <input wire:model.defer="client_name" value="{{ old('client_name') }}" type="text"
+                    class="form-control" rows='2' placeholder="Input Nama Pemesan" old>
+                  @error('client_name')
+                    <span class="text-danger" style="font-size: 11px">{{ $message }}</span>
+                  @enderror
+                </div>
+              </div>
             </div>
-          </div>
+            <div class="form-group">
+              <label for="exampleInputFile1">RS/Instansi</label>
+              <div class="input-group">
+                <div class="custom-file">
+                  <input wire:model.defer="client_place" value="{{ old('client_place') }}" type="text"
+                    class="form-control" rows='2' placeholder="Input Nama RS/Instansi" old>
+                  @error('client_place')
+                    <span class="text-danger" style="font-size: 11px">{{ $message }}</span>
+                  @enderror
+                </div>
+              </div>
+            </div>
+        </div>
+        <div class="modal-footer justify-content-end">
+          <button type="button" class="btn btn-default" data-dismiss="modal"><i class='nav-icon fas fa-arrow-left'></i>
+            &nbsp; Kembali</button>
+          <button wire:click="save" type="submit" class="btn btn-primary"><i class="nav-icon fas fa-save"></i> &nbsp;
+            Kirim</button>
         </div>
       </div>
-    </form>
-  @endforeach
-
+    </div>
+  </div>
+  </form>
 </div>

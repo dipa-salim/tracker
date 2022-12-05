@@ -31,16 +31,11 @@ class AuthController extends Controller
 
     public function authenticate(Request $request)
     {
-        $credentials = $request->validate([
-            'email' => 'email',
-            'password' => 'required',
-        ]);
+        $request->session()->regenerate();
 
-        // $credentials = $request->only('email', 'password');
+        $credentials = $request->only('email', 'password');
 
         if (Auth::attempt($credentials)) {
-
-            $request->session()->regenerate();
 
             if (Auth::user()->role == "Kurir") {
                 return redirect()->intended('/log-kurir');
@@ -48,17 +43,18 @@ class AuthController extends Controller
                 return redirect()->intended('/dashboard');
             }
         }
-        dd(Auth::user());
-
-        return redirect("login");
+        return redirect("/");
     }
 
-    // public function logout()
-    // {
-    //     Session::flush();
-    //     $cookie = Cookie::forget('smarttoken');
-    //     Auth::logout();
+    public function logout(Request $request)
+    {
+        // Session::flush();
+        Auth::logout();
 
-    //     return redirect('login')->withCookie($cookie);
-    // }
+        $request->session()->invalidate();
+ 
+        $request->session()->regenerateToken();
+        // $cookie = Cookie::forget('smarttoken');
+        return redirect("/");
+    }
 }

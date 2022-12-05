@@ -57,12 +57,25 @@
   </div>
 
   {{-- Script JS --}}
+  @livewireScripts
   <script src="{{ asset('adminlte') }}/plugins/jquery/jquery.min.js"></script>
   <script src="{{ asset('adminlte') }}/plugins/bootstrap/js/bootstrap.bundle.min.js"></script>
   <script src="{{ asset('adminlte') }}/dist/js/adminlte.min.js?v=3.2.0"></script>
 
+  @include('sweetalert::alert', ['cdn' => 'https://cdn.jsdelivr.net/npm/sweetalert2@9'])
+
+
+  <script>
+    window.addEventListener('showModal', event => {
+      $('#modalForm').modal('open');
+    })
+
+    window.addEventListener('closeModal', event => {
+      $('#modalForm').modal('close');
+    })
+  </script>
+
   @stack('custom-script')
-  @livewireScripts
 </body>
 
 </html>

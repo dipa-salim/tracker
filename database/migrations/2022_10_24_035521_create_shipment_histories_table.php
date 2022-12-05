@@ -24,7 +24,7 @@ return new class extends Migration
             $table->string('status');
             $table->string('spb_number');
             $table->timestamps();
-            $table->string('deleted_at');
+            $table->string('deleted_at')->nullable();
         });
     }
 

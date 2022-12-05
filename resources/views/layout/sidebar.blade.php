@@ -19,6 +19,12 @@
               </p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="{{ url('/logout') }}" class="nav-link {{ request()->is('logout') ? 'active' : '' }}">
+              <i class="nav-icon fas fa-solid fa-arrow-right"></i>
+              <p>Logout</p>
+            </a>
+          </li>
         @endif
 
         @if (auth()->user()->role == 'Kurir')
@@ -31,8 +37,8 @@
             </a>
           </li>
           <li class="nav-item">
-            <a href="{{ url('logout') }}" class="nav-link {{ request()->is('logout') ? 'active' : '' }}">
-              <i class="nav-icon fas fa-solid fa-box"></i>
+            <a href="{{ url('/logout') }}" class="nav-link {{ request()->is('logout') ? 'active' : '' }}">
+              <i class="nav-icon fas fa-solid fa-arrow-right"></i>
               <p>Logout</p>
             </a>
           </li>
